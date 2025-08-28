@@ -1,0 +1,139 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+    {% include 'partials/nav.html' %}
+
+    <div class="row m-auto py-3">
+        <div class="col-12 fs-6 fw-bold text-center mb-3">
+            Register for Conference #{{ conference.pk }}<br/>
+            <hr/>
+        </div>
+        <div class="col-12">
+            <div class="row m-0">
+                <div class="col-sm-12 col-md-4">
+                    <img src="{{ conferenceDetails.conference_banner.url }}" class="img-fluid " alt="...">
+                </div>
+                <div class="col-sm-12 col-md-8">
+                    <div class="fw-bolder fs-2 mb-2">
+                        {{ conference.title }}
+                    </div>
+                    <div class="mb-2">
+                        {{ conferenceDetails.conference_theme }}
+                    </div>
+                    <div class="mb-2">
+                        {{ conferenceDetails.conference_description }}
+                    </div>
+                    {% if conferenceDetails.conference_brochure %}
+                        <div class="mb-2">
+                            <a class="btn btn-sm btn-success" href="{{ conferenceDetails.conference_brochure.url }}"
+                               target="_blank">
+                                <i class="fa-solid fa-download"></i>
+                                Download Brochure
+                            </a>
+                            <a class="btn btn-sm btn-success" href="{{ conferenceDetails.conference_banner.url }}"
+                               target="_blank">
+                                <i class="fa-solid fa-download"></i>
+                                Download Banner
+                            </a>
+                        </div>
+                    {% endif %}
+                    <div class="fst-italic mb-3">
+                        {{ conference.location }}, {{ conference.venue }};
+                        From {{ conference.start_date }} to {{ conference.end_date }}
+                    </div>
+                    <div class="mb-3">
+                        <i class="fa-solid fa-user-large"></i> Contact People: <br/>
+                        <div class="row mt-2">
+                            <div class="col-sm-12 col-md-4">
+                                <i class="fa-regular fa-envelope"></i> {{ conference.organizer1 }} <br/>
+                                <i class="fa-solid fa-phone"></i> {{ conference.mobile1 }}
+                            </div>
+                            <div class="col-sm-12 col-md-4">
+                                <i class="fa-regular fa-envelope"></i> {{ conference.organizer2 }} <br/>
+                                <i class="fa-solid fa-phone"></i> {{ conference.mobile2 }}
+                            </div>
+                            <div class="col-sm-12 col-md-4">
+                                <i class="fa-regular fa-envelope"></i> {{ conference.organizer3 }} <br/>
+                                <i class="fa-solid fa-phone"></i> {{ conference.mobile3 }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="row m-0">
+                            {% if conferenceDetails.social_facebook %}
+                                <div class="col">
+                                    <a href="{{ conferenceDetails.social_facebook }}" target="_blank"
+                                       class="text-decoration-none">
+                                        <i class="fa-brands fa-facebook"></i> Facebook
+                                    </a>
+                                </div>
+                            {% endif %}
+                            {% if conferenceDetails.social_insta %}
+                                <div class="col">
+                                    <a href="{{ conferenceDetails.social_insta }}" target="_blank"
+                                       class="text-decoration-none">
+                                        <i class="fa-brands fa-instagram"></i> Instagram
+                                    </a>
+                                </div>
+                            {% endif %}
+                            {% if conferenceDetails.social_linkedin %}
+                                <div class="col">
+                                    <a href="{{ conferenceDetails.social_linkedin }}" target="_blank"
+                                       class="text-decoration-none">
+                                        <i class="fa-brands fa-linkedin"></i> LinkedIn
+                                    </a>
+                                </div>
+                            {% endif %}
+                            {% if conferenceDetails.social_twitter %}
+                                <div class="col">
+                                    <a href="{{ conferenceDetails.social_twitter }}" target="_blank"
+                                       class="text-decoration-none">
+                                        <i class="fa-brands fa-twitter"></i> Twitter
+                                    </a>
+                                </div>
+                            {% endif %}
+                            {% if conferenceDetails.social_youtube %}
+                                <div class="col">
+                                    <a href="{{ conferenceDetails.social_youtube }}" target="_blank"
+                                       class="text-decoration-none">
+                                        <i class="fa-brands fa-youtube"></i> YouTube
+                                    </a>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="mb-2">
+                        <small>
+                            Conference live from {{ conference.created_at|timesince }}
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 mt-3">
+            <hr/>
+            <form method="POST" class="d-flex align-items-center justify-content-center">
+                {% csrf_token %}
+                <div class="form-floating" style="max-width: 500px">
+                    <select class="form-select" id="participation" name="participation" aria-label="">
+                        <option value="Attend" selected>Attend the Conference</option>
+                        <option value="Organising">Attend & Being part of Organizing Committee</option>
+                        <option value="Sponsor">Attend & Being a Sponsor/Partner</option>
+                    </select>
+                    <label for="participation">Select your Preference</label>
+                </div>
+                <div class="p-2"></div>
+                <div class="">
+                    <button type="submit" class="btn btn-success p-3">
+                        Register
+                    </button>
+                </div>
+            </form>
+            <hr/>
+        </div>
+    </div>
+
+
+{% endblock content %}

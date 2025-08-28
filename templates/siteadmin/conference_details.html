@@ -1,0 +1,191 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+    {% include 'partials/nav.html' %}
+
+    <div class="row m-auto py-3">
+        <div class="col-12 fs-6 fw-bold text-center mb-3">
+            Manage Conference #{{ conference.pk }} <br/>
+            <hr/>
+        </div>
+        <div class="col-12">
+            <table class="table">
+                <tbody>
+                <tr>
+                    <th scope="row">Conference</th>
+                    <td>{{ conference.pk }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Conference Title</th>
+                    <td>{{ conference.title }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Conference Location</th>
+                    <td>{{ conference.location }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Conference Venue</th>
+                    <td>{{ conference.venue }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Conference Start Date</th>
+                    <td>{{ conference.start_date }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Conference End Date</th>
+                    <td>{{ conference.end_date }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Conference Organisers</th>
+                    <td>
+                        <i class="fa-solid fa-user-large"></i> Contact People: <br/>
+                        <div class="row mt-2">
+                            <div class="col-sm-12 col-md-4">
+                                <i class="fa-regular fa-envelope"></i> {{ conference.organizer1 }} <br/>
+                                <i class="fa-solid fa-phone"></i> {{ conference.mobile1 }}
+                            </div>
+                            <div class="col-sm-12 col-md-4">
+                                <i class="fa-regular fa-envelope"></i> {{ conference.organizer2 }} <br/>
+                                <i class="fa-solid fa-phone"></i> {{ conference.mobile2 }}
+                            </div>
+                            <div class="col-sm-12 col-md-4">
+                                <i class="fa-regular fa-envelope"></i> {{ conference.organizer3 }} <br/>
+                                <i class="fa-solid fa-phone"></i> {{ conference.mobile3 }}
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">Conference Status</th>
+                    <td>
+                        {% if conference.is_published %}
+                            Active
+                        {% else %}
+                            In-Active
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">Conference Created At</th>
+                    <td>{{ conference.created_at }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Conference Created By</th>
+                    <td>{{ conference.created_by }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Conference Social</th>
+                    <td>
+                        <div class="row m-0">
+                            {% if conference_details.social_facebook %}
+                                <div class="col">
+                                    <a href="{{ conference_details.social_facebook }}" target="_blank"
+                                       class="text-decoration-none">
+                                        <i class="fa-brands fa-facebook"></i> Facebook
+                                    </a>
+                                </div>
+                            {% endif %}
+                            {% if conference_details.social_insta %}
+                                <div class="col">
+                                    <a href="{{ conference_details.social_insta }}" target="_blank"
+                                       class="text-decoration-none">
+                                        <i class="fa-brands fa-instagram"></i> Instagram
+                                    </a>
+                                </div>
+                            {% endif %}
+                            {% if conference_details.social_linkedin %}
+                                <div class="col">
+                                    <a href="{{ conference_details.social_linkedin }}" target="_blank"
+                                       class="text-decoration-none">
+                                        <i class="fa-brands fa-linkedin"></i> LinkedIn
+                                    </a>
+                                </div>
+                            {% endif %}
+                            {% if conference_details.social_twitter %}
+                                <div class="col">
+                                    <a href="{{ conference_details.social_twitter }}" target="_blank"
+                                       class="text-decoration-none">
+                                        <i class="fa-brands fa-twitter"></i> Twitter
+                                    </a>
+                                </div>
+                            {% endif %}
+                            {% if conference_details.social_youtube %}
+                                <div class="col">
+                                    <a href="{{ conference_details.social_youtube }}" target="_blank"
+                                       class="text-decoration-none">
+                                        <i class="fa-brands fa-youtube"></i> YouTube
+                                    </a>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">Conference Banner</th>
+                    <td>
+                        {% if conference_details.conference_banner %}
+                            <img src="{{ conference_details.conference_banner.url }}" class="img-fluid" height="200px"
+                                 width="200px" alt="...">
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">Conference Brochure</th>
+                    <td>
+                        {% if conference_details.conference_brochure %}
+                            <a href="{{ conference_details.conference_brochure.url }}" target="_blank"
+                               class="text-decoration-none">
+                                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                                Conference Brochure
+                            </a>
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">Conference Theme</th>
+                    <td>{{ conference_details.conference_theme }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Conference Description</th>
+                    <td style="max-width: 500px">{{ conference_details.conference_description }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Feedback Link</th>
+                    <td>
+                        <a href="{{ conference_details.conference_feedback_link }}" target="_blank">
+                            {{ conference_details.conference_feedback_link }}
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">Conference Registration Count</th>
+                    <td>{{ participant_count }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Conference created on</th>
+                    <td>{{ conference.created_at }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Conference created By</th>
+                    <td>{{ conference.created_by }}</td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="col-12 d-flex justify-content-around mt-4">
+                <a class="btn btn-warning text-decoration-none"
+                   href="{% url 'admin_conference_status' conference.conference_id %}">
+                    <i class="fa-solid fa-toggle-on"></i>
+                    Toggle Conference Status
+                </a>
+                <a class="btn btn-success text-decoration-none"
+                   href="{% url 'admin_conference_update' conference.conference_id %}">
+                    <i class="fa-solid fa-pen-to-square"></i>
+                    Update Conference Details
+                </a>
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}

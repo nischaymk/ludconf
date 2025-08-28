@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+    {% include 'partials/nav.html' %}
+
+    <div class="row m-auto py-3">
+        <div class="col-12 fs-6 fw-bold text-center mb-3">
+            Conference Admin Dashboard <br/>
+            <hr/>
+        </div>
+        <div class="col-sm-12 col-md-6 mb-3">
+            <div class="text-center">
+                Active Conferences
+            </div>
+            <div class="text-center fw-bolder fs-1">
+                {{ active_conferences }}
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-6 mb-3">
+            <div class="text-center">
+                Conferences Managed
+            </div>
+            <div class="text-center fw-bolder fs-1">
+                {{ all_conferences }}
+            </div>
+        </div>
+        <div class="col-12 mb-3">
+            <hr/>
+            <div class="text-center mb-3">
+                # for active conferences
+            </div>
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Conference Title</th>
+                    <th>Registration #</th>
+                    <th>Status</th>
+                    <th>Manage</th>
+                    <th>Participants</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for registration in registrations %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <th scope="row">{{ registration.title }}</th>
+                        <td>{{ registration.registration_count }}</td>
+                        <td>
+                            {% if registration.is_published %}
+                                Active
+                            {% else %}
+                                In-Active
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a class="btn btn-sm btn-warning"
+                               href="{% url 'admin_manage_conference' registration.conference_id %}">
+                                <i class="fa-regular fa-circle-check"></i>
+                                Manage
+                            </a>
+                        </td>
+                        <td>
+                            <a class="btn btn-sm btn-warning "
+                               href="{% url 'download_registration_details' registration.conference_id %}">
+                                <i class="fa-regular fa-circle-check"></i>
+                                Download Registration
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            <hr/>
+        </div>
+        <div class="col-12">
+            <a class="float-end btn btn-sm btn-warning" href="{% url 'download_emails_for_newsletter' %}">
+                Download emails for NewsLetter
+            </a>
+        </div>
+    </div>
+
+{% endblock content %}

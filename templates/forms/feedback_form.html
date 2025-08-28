@@ -1,0 +1,541 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+{% include 'partials/nav.html' %}
+
+<div class="container my-5">
+  <h2 class="mb-4 text-center">Let Us Dream Community Conference</h2>
+  <h4 class="fw-bold text-center">Post-Conference Feedback Survey</h4>
+  <p class="text-center">To be filled immediately after the conference – focuses on initial impressions, learning, and experience.</p>
+  <p class="text-center">
+    <strong>⏱️ Estimated time to complete:</strong> 5 minutes<br>
+    <strong>🎓 Certificate:</strong> Will be sent within 24–48 hours post-conference.
+  </p>
+
+  <form method="POST">
+    {% csrf_token %}
+    <!-- Conference Selection -->
+    <div class="form-group mb-4">
+      <label for="conference_id"><strong>Q0.</strong> Select the Conference You Attended:</label>
+      <select name="conference_id" id="conference_id" class="form-control" required>
+        <option value="">-- Choose a conference --</option>
+        {% for conf in conferences %}
+          <option value="{{ conf.conference_id }}" {% if selected_conference and conf == selected_conference %}selected{% endif %}>
+            {{ conf.title }} ({{ conf.start_date }})
+          </option>
+        {% endfor %}
+      </select>
+    </div>
+
+  <form method="POST">
+    {% csrf_token %}
+    <div class="form-card mb-4">
+      <label for="conference_location"><strong>Conference Location:</strong></label>
+      <select name="conference_location" id="conference_location" class="form-control" required>
+        <option value="">-- Choose a location --</option>
+        <option value="Chennai, India">Chennai, India</option>
+        <option value="Texas, USA">Texas, USA</option>
+        <option value="NewYork, USA">New York, USA</option>
+        <option value="Pune, India">Pune, India</option>
+        <option value="Hyderabad, India">Hyderabad, India</option>
+        <option value="Bengaluru, India">Bengaluru, India</option>
+        <option value="Louisiana, USA">Louisiana, USA</option>
+        <option value="Delhi, India">Delhi, India</option>
+        <option value="Kolkata, India">Kolkata, India</option>
+        <option value="TVM, Kerala">TVM, Kerala</option>
+        <option value="Virginia, USA">Virginia, USA</option>
+      </select>
+    </div>
+
+    <div class="form-card mb-4">
+      <h5 class="fw-bold">Participant Information</h5>
+      
+      <div class="form-group">
+        <label><strong>1.</strong> Name (as you want on the certificate)</label>
+        <input type="text" class="form-control" name="full_name" required>
+      </div>
+      
+      <div class="form-group">
+        <label><strong>2.</strong> Email Address</label>
+        <input type="email" class="form-control" name="email" required>
+      </div>
+      
+      <div class="form-group">
+        <label><strong>3.</strong> WhatsApp Number (Optional - For future communication and updates only)</label>
+        <input type="text" class="form-control" name="whatsapp">
+      </div>
+      
+      <div class="form-group">
+        <label><strong>4.</strong> Age</label>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="age" id="age_18_24" value="18-24" required>
+          <label class="form-check-label" for="age_18_24">18-24</label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="age" id="age_25_40" value="25-40">
+          <label class="form-check-label" for="age_25_40">25-40</label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="age" id="age_41_56" value="41-56">
+          <label class="form-check-label" for="age_41_56">41-56</label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="age" id="age_57" value="57+">
+          <label class="form-check-label" for="age_57">57+</label>
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label><strong>5.</strong> Gender</label>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="gender" id="gender_male" value="Male" required>
+          <label class="form-check-label" for="gender_male">Male</label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="gender" id="gender_female" value="Female">
+          <label class="form-check-label" for="gender_female">Female</label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="gender" id="gender_other" value="Prefer not to say">
+          <label class="form-check-label" for="gender_other">Prefer not to say</label>
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label><strong>6.</strong> Profession</label>
+        <select name="profession" class="form-control" required>
+          <option value="">-- Select --</option>
+          <option value="University/College Faculty">University/College Faculty</option>
+          <option value="Post secondary faculty (vocational/technical schools)">Post secondary faculty (vocational/technical schools)</option>
+          <option value="Student">Student</option>
+          <option value="Social Worker">Social Worker</option>
+          <option value="Healthcare">Healthcare</option>
+          <option value="Corporate Professional">Corporate Professional</option>
+          <option value="Retired Professional">Retired Professional</option>
+          <option value="Entrepreneur">Entrepreneur</option>
+          <option value="Other">Other</option>
+        </select>
+        <input type="text" name="profession_other" class="form-control mt-2" placeholder="If other, please specify" style="display: none;">
+      </div>
+      
+      <div class="form-group">
+        <label><strong>7.</strong> Location you reside in currently</label>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="residence_type" id="residence_rural" value="Rural Area" required>
+          <label class="form-check-label" for="residence_rural">Rural Area</label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="residence_type" id="residence_urban" value="Urban Area">
+          <label class="form-check-label" for="residence_urban">Urban Area</label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="residence_type" id="residence_suburban" value="Sub Urban">
+          <label class="form-check-label" for="residence_suburban">Sub Urban</label>
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label><strong>8.</strong> Is this your first time attending a Let Us Dream Community Conference?</label>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="first_time" id="first_time_yes" value="Yes" required>
+          <label class="form-check-label" for="first_time_yes">Yes</label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="first_time" id="first_time_no" value="No">
+          <label class="form-check-label" for="first_time_no">No</label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Volunteerism & Community Engagement Section -->
+    <div class="form-card mb-4">
+      <h5 class="fw-bold">9. Volunteerism & Community Engagement</h5>
+      <p class="fst-italic">Please rate the following statements:</p>
+      
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th style="width: 60%">Question</th>
+            <th class="text-center">1 - Strongly Disagree</th>
+            <th class="text-center">2 - Disagree</th>
+            <th class="text-center">3 - Neutral</th>
+            <th class="text-center">4 - Agree</th>
+            <th class="text-center">5 - Strongly Agree</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>The conference increased my interest in community volunteering.</td>
+            {% for i in "12345"|make_list %}
+            <td class="text-center">
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="q9_1" id="q9_1_{{ i }}" value="{{ i }}" required>
+              </div>
+            </td>
+            {% endfor %}
+          </tr>
+          <tr>
+            <td>The conference strengthened my sense of belonging to the community.</td>
+            {% for i in "12345"|make_list %}
+            <td class="text-center">
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="q9_2" id="q9_2_{{ i }}" value="{{ i }}" required>
+              </div>
+            </td>
+            {% endfor %}
+          </tr>
+          <tr>
+            <td>Speakers and stories inspired me to contribute to my community.</td>
+            {% for i in "12345"|make_list %}
+            <td class="text-center">
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="q9_3" id="q9_3_{{ i }}" value="{{ i }}" required>
+              </div>
+            </td>
+            {% endfor %}
+          </tr>
+          <tr>
+            <td>The stalls and interactions provided practical insights into volunteer opportunities.</td>
+            {% for i in "12345"|make_list %}
+            <td class="text-center">
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="q9_4" id="q9_4_{{ i }}" value="{{ i }}" required>
+              </div>
+            </td>
+            {% endfor %}
+          </tr>
+          <tr>
+            <td>The conference encouraged me to reflect on my role in community development.</td>
+            {% for i in "12345"|make_list %}
+            <td class="text-center">
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="q9_5" id="q9_5_{{ i }}" value="{{ i }}" required>
+              </div>
+            </td>
+            {% endfor %}
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Social Entrepreneurship & Community Service Section -->
+    <div class="form-card mb-4">
+      <h5 class="fw-bold">10. Social Entrepreneurship & Community Service</h5>
+      <p class="fst-italic">Please rate the following statements:</p>
+      
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th style="width: 60%">Question</th>
+            <th class="text-center">1 - Strongly Disagree</th>
+            <th class="text-center">2 - Disagree</th>
+            <th class="text-center">3 - Neutral</th>
+            <th class="text-center">4 - Agree</th>
+            <th class="text-center">5 - Strongly Agree</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>I feel confident in starting an initiative addressing community issues.</td>
+            {% for i in "12345"|make_list %}
+            <td class="text-center">
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="q10_1" id="q10_1_{{ i }}" value="{{ i }}" required>
+              </div>
+            </td>
+            {% endfor %}
+          </tr>
+          <tr>
+            <td>The conference showcased practical models for community service.</td>
+            {% for i in "12345"|make_list %}
+            <td class="text-center">
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="q10_2" id="q10_2_{{ i }}" value="{{ i }}" required>
+              </div>
+            </td>
+            {% endfor %}
+          </tr>
+          <tr>
+            <td>Sessions motivated me to consider social entrepreneurship.</td>
+            {% for i in "12345"|make_list %}
+            <td class="text-center">
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="q10_3" id="q10_3_{{ i }}" value="{{ i }}" required>
+              </div>
+            </td>
+            {% endfor %}
+          </tr>
+          <tr>
+            <td>I gained clarity on how to initiate and scale social projects.</td>
+            {% for i in "12345"|make_list %}
+            <td class="text-center">
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="q10_4" id="q10_4_{{ i }}" value="{{ i }}" required>
+              </div>
+            </td>
+            {% endfor %}
+          </tr>
+          <tr>
+            <td>I understand better the challenges and opportunities in community service.</td>
+            {% for i in "12345"|make_list %}
+            <td class="text-center">
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="q10_5" id="q10_5_{{ i }}" value="{{ i }}" required>
+              </div>
+            </td>
+            {% endfor %}
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Learning & Knowledge Sharing Section -->
+    <div class="form-card mb-4">
+      <h5 class="fw-bold">11. Learning & Knowledge Sharing</h5>
+      <p class="fst-italic">Please rate the following statements:</p>
+      
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th style="width: 60%">Question</th>
+            <th class="text-center">1 - Strongly Disagree</th>
+            <th class="text-center">2 - Disagree</th>
+            <th class="text-center">3 - Neutral</th>
+            <th class="text-center">4 - Agree</th>
+            <th class="text-center">5 - Strongly Agree</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>The conference introduced me to new and relevant concepts or practices.</td>
+            {% for i in "12345"|make_list %}
+            <td class="text-center">
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="q11_1" id="q11_1_{{ i }}" value="{{ i }}" required>
+              </div>
+            </td>
+            {% endfor %}
+          </tr>
+          <tr>
+            <td>I gained practical ideas that I can apply in my work or community.</td>
+            {% for i in "12345"|make_list %}
+            <td class="text-center">
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="q11_2" id="q11_2_{{ i }}" value="{{ i }}" required>
+              </div>
+            </td>
+            {% endfor %}
+          </tr>
+          <tr>
+            <td>The sessions expanded my understanding of innovations in education, health, and/or social service.</td>
+            {% for i in "12345"|make_list %}
+            <td class="text-center">
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="q11_3" id="q11_3_{{ i }}" value="{{ i }}" required>
+              </div>
+            </td>
+            {% endfor %}
+          </tr>
+          <tr>
+            <td>The keynotes and panel discussions broadened my perspective on community development.</td>
+            {% for i in "12345"|make_list %}
+            <td class="text-center">
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="q11_4" id="q11_4_{{ i }}" value="{{ i }}" required>
+              </div>
+            </td>
+            {% endfor %}
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Networking & Collaborations Section -->
+    <div class="form-card mb-4">
+      <h5 class="fw-bold">12. Networking & Collaborations</h5>
+      <p class="fst-italic">Please rate the following statements:</p>
+      
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th style="width: 60%">Question</th>
+            <th class="text-center">1 - Strongly Disagree</th>
+            <th class="text-center">2 - Disagree</th>
+            <th class="text-center">3 - Neutral</th>
+            <th class="text-center">4 - Agree</th>
+            <th class="text-center">5 - Strongly Agree</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>The conference connected me with people I can collaborate with.</td>
+            {% for i in "12345"|make_list %}
+            <td class="text-center">
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="q12_1" id="q12_1_{{ i }}" value="{{ i }}" required>
+              </div>
+            </td>
+            {% endfor %}
+          </tr>
+          <tr>
+            <td>The conference provided space for meaningful conversations.</td>
+            {% for i in "12345"|make_list %}
+            <td class="text-center">
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="q12_2" id="q12_2_{{ i }}" value="{{ i }}" required>
+              </div>
+            </td>
+            {% endfor %}
+          </tr>
+          <tr>
+            <td>I met individuals from diverse backgrounds.</td>
+            {% for i in "12345"|make_list %}
+            <td class="text-center">
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="q12_3" id="q12_3_{{ i }}" value="{{ i }}" required>
+              </div>
+            </td>
+            {% endfor %}
+          </tr>
+          <tr>
+            <td>I feel more connected to a community of like-minded individuals.</td>
+            {% for i in "12345"|make_list %}
+            <td class="text-center">
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="q12_4" id="q12_4_{{ i }}" value="{{ i }}" required>
+              </div>
+            </td>
+            {% endfor %}
+          </tr>
+          <tr>
+            <td>I plan to stay in touch with contacts made during the conference.</td>
+            {% for i in "12345"|make_list %}
+            <td class="text-center">
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="q12_5" id="q12_5_{{ i }}" value="{{ i }}" required>
+              </div>
+            </td>
+            {% endfor %}
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Additional Questions -->
+    <div class="form-card mb-4">
+      <div class="form-group">
+        <label><strong>13.</strong> Would you be interested in participating in a separate study on social sensitization and personal growth?</label>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="followup_study" id="followup_yes" value="True" required>
+          <label class="form-check-label" for="followup_yes">Yes</label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="followup_study" id="followup_no" value="False">
+          <label class="form-check-label" for="followup_no">No</label>
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label><strong>14.</strong> How satisfied were you overall with the community conference?</label>
+        <div class="rating-scale">
+          <span class="scale-start">1 - Very Dissatisfied</span>
+          {% for i in "12345"|make_list %}
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="satisfaction" id="satisfaction_{{ i }}" value="{{ i }}" required>
+            <label class="form-check-label" for="satisfaction_{{ i }}">{{ i }}</label>
+          </div>
+          {% endfor %}
+          <span class="scale-end">5 - Very Satisfied</span>
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label><strong>15.</strong> What were your key takeaways from this event?</label>
+        <textarea name="takeaways" class="form-control" rows="3" required></textarea>
+      </div>
+      
+      <div class="form-group">
+        <label><strong>16.</strong> What suggestions do you have to improve the conference experience?</label>
+        <textarea name="suggestions" class="form-control" rows="3" required></textarea>
+      </div>
+      
+      <div class="form-group">
+        <label><strong>17.</strong> Would you like to be part of the LUD Community Conference Team at your location?</label>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="team_interest" id="team_yes" value="True" required>
+          <label class="form-check-label" for="team_yes">Yes</label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="team_interest" id="team_no" value="False">
+          <label class="form-check-label" for="team_no">No</label>
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label><strong>Most Engaging 3 activities:</strong></label>
+        <div class="checkbox-group">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" name="engaging_activities" value="Keynote" id="activity_keynote">
+            <label class="form-check-label" for="activity_keynote">Keynote</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" name="engaging_activities" value="Panels" id="activity_panels">
+            <label class="form-check-label" for="activity_panels">Panels</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" name="engaging_activities" value="Group Discussion" id="activity_discussion">
+            <label class="form-check-label" for="activity_discussion">Group Discussion</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" name="engaging_activities" value="Changemakers" id="activity_changemakers">
+            <label class="form-check-label" for="activity_changemakers">Changemakers</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" name="engaging_activities" value="Stalls" id="activity_stalls">
+            <label class="form-check-label" for="activity_stalls">Stalls</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" name="engaging_activities" value="Networking" id="activity_networking">
+            <label class="form-check-label" for="activity_networking">Networking</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" name="engaging_activities" value="Volunteering" id="activity_volunteering">
+            <label class="form-check-label" for="activity_volunteering">Volunteering</label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="text-center mt-4">
+      <button type="submit" class="btn btn-primary btn-lg">Submit Feedback</button>
+    </div>
+  </form>
+</div>
+
+<style>
+
+</style>
+
+<script>
+// Show/hide "other" profession field
+document.querySelector('select[name="profession"]').addEventListener('change', function() {
+  const otherField = document.querySelector('input[name="profession_other"]');
+  otherField.style.display = this.value === 'Other' ? 'block' : 'none';
+  if (this.value !== 'Other') {
+    otherField.value = '';
+  }
+});
+
+// Limit engaging activities to 3 selections
+const activityCheckboxes = document.querySelectorAll('input[name="engaging_activities"]');
+activityCheckboxes.forEach(checkbox => {
+  checkbox.addEventListener('change', function() {
+    const checkedCount = document.querySelectorAll('input[name="engaging_activities"]:checked').length;
+    if (checkedCount > 3) {
+      this.checked = false;
+      alert('Please select no more than 3 activities.');
+    }
+  });
+});
+</script>
+{% endblock %}

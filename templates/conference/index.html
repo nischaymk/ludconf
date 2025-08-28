@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col-12">
+        Upcoming LUD Conferences
+    </div>
+
+    <div class="col-12 py-3">
+
+        {% if conferences %}
+            {% for conf in conferences %}
+
+                <div class="card mb-3">
+                    <div class="row p-1">
+                        <div class="col-md-3 d-flex justify-content-center">
+                            {% for confdetail in conference_details %}
+                                {% if conf.pk == confdetail.conference_id %}
+                                    {% if confdetail.conference_banner %}
+                                        <img src="{{ confdetail.conference_banner.url }}" class="img-fluid" alt="...">
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                        <div class="col-md-9">
+                            <div class="card-body">
+                                <div class="float-end mb-3">
+                                    <a class="btn btn-sm btn-warning"
+                                       href="{% url 'one_time_registration' conf.pk %}">
+                                        <i class="fa-regular fa-circle-check"></i>
+                                        Participate
+                                    </a>
+                                    <a class="btn btn-sm btn-success"
+                                       href="{% url 'conference_details' conf.pk %}">
+                                        <i class="fa-solid fa-eye"></i>
+                                        View More
+                                    </a>
+                                </div>
+                                <h5 class="card-title text-wrap">
+                                    {{ conf.title }}
+                                </h5>
+                                <hr/>
+                                <p class="card-text">
+                                    <span class="fw-bold">
+                                        {% for confdetail in conference_details %}
+                                            {% if conf.pk == confdetail.conference_id %}
+                                                {{ confdetail.conference_theme }}
+                                            {% endif %}
+                                        {% endfor %}
+                                    </span> <br/>
+                                    {% for confdetail in conference_details %}
+                                        {% if conf.pk == confdetail.conference_id %}
+                                            {{ confdetail.conference_description }}
+                                        {% endif %}
+                                    {% endfor %}
+                                </p>
+                                <p class="card-text">
+                                    {{ conf.location }} | {{ conf.venue }} <br/>
+                                    <span class="fst-italic">
+                                        {{ conf.start_date }} | {{ conf.end_date }}
+                                    </span>
+                                </p>
+                                <div class="card-text">
+                                    <i class="fa-solid fa-user-large"></i> Contact People: <br/>
+                                    <div class="row mt-2">
+                                        <div class="col-sm-12 col-md-4">
+                                            <i class="fa-regular fa-envelope"></i> {{ conf.organizer1 }} <br/>
+                                            <i class="fa-solid fa-phone"></i> {{ conf.mobile1 }}
+                                        </div>
+                                        <div class="col-sm-12 col-md-4">
+                                            <i class="fa-regular fa-envelope"></i> {{ conf.organizer2 }} <br/>
+                                            <i class="fa-solid fa-phone"></i> {{ conf.mobile2 }}
+                                        </div>
+                                        <div class="col-sm-12 col-md-4">
+                                            <i class="fa-regular fa-envelope"></i> {{ conf.organizer3 }} <br/>
+                                            <i class="fa-solid fa-phone"></i> {{ conf.mobile3 }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <p class="card-text mt-3">
+                                    <small class="text-body-secondary">
+                                        Posted {{ conf.created_at|timesince }} ago.
+                                    </small>
+                                </p>
+
+                                <!-- 🆕 Survey Buttons -->
+                                <div class="mt-3">
+                                    <a class="btn btn-outline-primary btn-sm" href="{% url 'conference_feedback' %}">
+                                        Fill Feedback Survey
+                                    </a>
+                                    <a class="btn btn-outline-success btn-sm ms-2" href="{% url 'reflection_survey' %}">
+                                        Fill Reflection Survey
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            {% endfor %}
+        {% else %}
+            <div class="text-center p-3 fw-bolder">
+                No conferences added yet.
+            </div>
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock content %}
